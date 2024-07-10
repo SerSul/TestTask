@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Students</title>
+    <style>
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+    <script>
+        function saveOnBlur(id) {
+            var input = document.getElementById('name-input-' + id);
+            input.addEventListener('blur', function() {
+                var form = document.getElementById('edit-form-' + id);
+                form.submit();
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>Students</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Order</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student : ${students}">
+        <td th:text="${student.id}"></td>
+        <td>
+            <form id="edit-form-[[${student.id}]]" th:action="@{/api/v1/students/edit/{id}(id=${student.id})}" method="post" class="actions">
+                <input id="name-input-[[${student.id}]]" type="text" name="name" th:value="${student.name}" required onfocusout="saveOnBlur([[${student.id}]])" />
+            </form>
+        </td>
+        <td th:text="${student.order}"></td>
+        <td class="actions">
+            <form th:action="@{/api/v1/students/moveUp/{id}(id=${student.id})}" method="post">
+                <button type="submit">↑</button>
+            </form>
+            <form th:action="@{/api/v1/students/moveDown/{id}(id=${student.id})}" method="post">
+                <button type="submit">↓</button>
+            </form>
+            <form th:action="@{/api/v1/students/delete/{id}(id=${student.id})}" method="post">
+                <button type="submit">🗑️</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{/api/v1/students(page=${i})}" th:text="${i + 1}"></a>
+    </span>
+</div>
+</body>
+</html>
