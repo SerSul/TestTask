@@ -35,7 +35,7 @@
         <td th:text="${student.id}"></td>
         <td>
             <form id="edit-form-[[${student.id}]]" th:action="@{/api/v1/students/edit/{id}(id=${student.id})}" method="post" class="actions">
-                <input id="name-input-[[${student.id}]]" type="text" name="name" th:value="${student.name}" required onfocusout="saveOnBlur([[${student.id}]])" />
+                <label for="name-input-[[${student.id}]]"></label><input id="name-input-[[${student.id}]]" type="text" name="name" th:value="${student.name}" required onfocusout="saveOnBlur([[${student.id}]])" />
             </form>
         </td>
         <td th:text="${student.order}"></td>
